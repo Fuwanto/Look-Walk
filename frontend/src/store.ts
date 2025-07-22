@@ -1,14 +1,17 @@
 import { create } from "zustand"
 import { devtools } from "zustand/middleware"
-import { Product, ShoppingCart } from "./schemas"
+import { Coupon, CouponResponseSchema, Product, ShoppingCart } from "./schemas"
 
 interface Store {
   total: number
+  discount: number
   contents: ShoppingCart
+  coupon: Coupon
   addToCart: (product: Product) => void
   updateQuantity: (id: Product["id"], quantity: number) => void
   removeFromCart: (id: Product["id"]) => void
-  calculateTotal: () => void
+  applyCoupon: (couponName: string) => Promise<void>
+  clearOrder: () => void
 }
 
 export const useStore = create<Store>()(
@@ -18,36 +21,49 @@ export const useStore = create<Store>()(
       cart.reduce((sum, item) => sum + item.quantity * item.price, 0)
 
     const applyCart = (updatedContents: ShoppingCart) => {
-      set({ contents: updatedContents, total: computeTotal(updatedContents) })
+      const subtotal = computeTotal(updatedContents)
+      const pct = get().coupon.percentage || 0
+      const discount = (pct / 100) * subtotal
+      const total = subtotal - discount
+
+      set({
+        contents: updatedContents,
+        total,
+        discount,
+      })
+    }
+
+    const initialState = {
+      total: 0,
+      discount: 0,
+      contents: [],
+      coupon: {
+        percentage: 0,
+        name: "",
+        message: "",
+      },
     }
 
     // --- State inicial y acciones ---
     return {
-      total: 0,
-      contents: [],
+      ...initialState,
 
       addToCart: (product) => {
         const { id: productId, ...itemData } = product
         const { contents } = get()
-        const existingItemIndex = contents.findIndex(
-          (item) => item.productId === productId
-        )
+        const idx = contents.findIndex((i) => i.productId === productId)
 
-        let updatedContents: ShoppingCart
-        if (existingItemIndex >= 0) {
-          const existingItem = contents[existingItemIndex]
-          // Si ya llegó al stock máximo, no cambia nada
-          if (existingItem.quantity >= existingItem.stock) return
-
-          // Incremento cantidad
-          updatedContents = contents.map((item) =>
-            item.productId === productId
-              ? { ...item, quantity: item.quantity + 1 }
-              : item
+        let updated: ShoppingCart
+        if (idx >= 0) {
+          const item = contents[idx]
+          // Si ya llegó al stock máximo, no hacer nada
+          if (item.quantity >= item.stock) return
+          updated = contents.map((i) =>
+            i.productId === productId ? { ...i, quantity: i.quantity + 1 } : i
           )
         } else {
-          // Agrego nuevo ítem
-          updatedContents = [
+          // Agregar nuevo ítem al carrito
+          updated = [
             ...contents,
             {
               ...itemData,
@@ -57,26 +73,43 @@ export const useStore = create<Store>()(
           ]
         }
 
-        applyCart(updatedContents)
+        applyCart(updated)
       },
 
       updateQuantity: (id, quantity) => {
-        const { contents } = get()
-        const updatedContents = contents.map((item) =>
-          item.productId === id ? { ...item, quantity } : item
+        const updated = get().contents.map((i) =>
+          i.productId === id ? { ...i, quantity } : i
         )
-        applyCart(updatedContents)
+        applyCart(updated)
       },
 
       removeFromCart: (id) => {
-        const { contents } = get()
-        const updatedContents = contents.filter((item) => item.productId !== id)
-        applyCart(updatedContents)
+        const updated = get().contents.filter((i) => i.productId !== id)
+        applyCart(updated)
+
+        if (!get().contents.length) {
+          get().clearOrder()
+        }
       },
 
-      calculateTotal: () => {
-        const { contents } = get()
-        set({ total: computeTotal(contents) })
+      applyCoupon: async (couponName) => {
+        const res = await fetch("/coupons/api", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ name: couponName }),
+        })
+        const json = await res.json()
+        const coupon = CouponResponseSchema.parse(json)
+
+        // Guardar el cupón
+        set({ coupon })
+
+        // Reaplicar carrito para recalcular descuento y total
+        applyCart(get().contents)
+      },
+
+      clearOrder: () => {
+        set({ ...initialState })
       },
     }
   })
