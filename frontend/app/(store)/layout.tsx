@@ -1,5 +1,6 @@
 import ShoppingCart from "../components/cart/ShoppingCart"
 import MainNav from "../components/UI/MainNav"
+import ToastNotification from "../components/UI/ToastNotification"
 
 export default function RootLayout({
   children,
@@ -17,6 +18,7 @@ export default function RootLayout({
           <ShoppingCart />
         </aside>
       </main>
+      <ToastNotification />
     </>
   )
 }

@@ -28,8 +28,11 @@ export class CategoriesService {
     };
 
     if (products === 'true') {
-      options.relations = {
-        products: true,
+      options.relations = ['products'];
+      options.order = {
+        products: {
+          id: 'DESC',
+        },
       };
     }
 
