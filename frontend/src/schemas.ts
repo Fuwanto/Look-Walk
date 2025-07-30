@@ -1,16 +1,21 @@
 import { z } from "zod"
 
+export const CategorySchema = z.object({
+  id: z.number(),
+  name: z.string(),
+})
 export const ProductSchema = z.object({
   id: z.number(),
   name: z.string(),
   image: z.string(),
   price: z.coerce.number(),
   stock: z.number(),
+  categoryId: z.number(),
 })
 
-export const CategorySchema = z.object({
-  id: z.number(),
-  name: z.string(),
+export const ProductsResponseSchema = z.object({
+  products: z.array(ProductSchema),
+  total: z.number(),
 })
 
 export const CategoriesResponseSchema = z.array(CategorySchema)
@@ -67,7 +72,7 @@ export const ContentsSchema = z.object({
   id: z.number(),
   quantity: z.number(),
   price: z.string(),
-  product: ProductSchema,
+  product: ProductSchema.omit({ categoryId: true }),
 })
 export const TransactionResponseSchema = z.object({
   id: z.number(),
@@ -76,6 +81,19 @@ export const TransactionResponseSchema = z.object({
   discount: z.string().nullable(),
   coupon: z.string().nullable(),
   contents: z.array(ContentsSchema),
+})
+
+export const ProductFormSchema = z.object({
+  name: z
+    .string()
+    .min(1, { message: "El Nombre del Producto no puede ir vacio" }),
+  price: z.coerce
+    .number({ message: "Precio no válido" })
+    .min(1, { message: "El Precio debe ser mayor a 0" }),
+  stock: z.coerce
+    .number({ message: "Stock no válido" })
+    .min(1, { message: "El Stock debe ser mayor a 0" }),
+  categoryId: z.coerce.number({ message: "La Categoria no es válida" }),
 })
 
 export const TransactionsResponseSchema = z.array(TransactionResponseSchema)

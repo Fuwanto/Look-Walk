@@ -40,6 +40,14 @@ export class CategoriesService {
     if (!category) {
       throw new NotFoundException('La Categoría no existe');
     }
+
+    if (products === 'true' && category.products) {
+      category.products = category.products.map((product) => ({
+        ...product,
+        categoryId: category.id,
+      }));
+    }
+
     return category;
   }
 

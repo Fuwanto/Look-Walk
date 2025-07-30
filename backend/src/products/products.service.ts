@@ -51,7 +51,14 @@ export class ProductsService {
 
     const [products, total] =
       await this.productRepository.findAndCount(options);
-    return { products, total };
+
+    // Map products to include categoryId directly
+    const productsWithCategoryId = products.map((product) => ({
+      ...product,
+      categoryId: product.category?.id ?? null,
+    }));
+
+    return { products: productsWithCategoryId, total };
   }
 
   async findOne(id: number) {
@@ -63,7 +70,11 @@ export class ProductsService {
       throw new NotFoundException('El producto no existe');
     }
 
-    return product;
+    // Return product with categoryId directly
+    return {
+      ...product,
+      categoryId: product.category?.id ?? null,
+    };
   }
 
   async update(id: number, updateProductDto: UpdateProductDto) {
@@ -83,12 +94,12 @@ export class ProductsService {
     }
 
     await this.productRepository.save(product);
-    return 'Producto actualizado correctamente';
+    return { message: 'Producto actualizado correctamente' };
   }
 
   async remove(id: number) {
     const product = await this.findOne(id);
     await this.productRepository.remove(product);
-    return 'Producto eliminado correctamente';
+    return { message: 'Producto eliminado correctamente' };
   }
 }
