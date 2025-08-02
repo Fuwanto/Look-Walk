@@ -15,7 +15,6 @@ async function getProducts(categoryId: string) {
   if (!req.ok) {
     redirect("/")
   }
-  console.log(json)
   return CategoryWithProductsResponseSchema.parse(json)
 }
 
