@@ -16,7 +16,6 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Look&Walk",
   description: "Tienda online de zapatillas, gafas de sol y hoodies.",
-  themeColor: "#000000",
 }
 
 export default function RootLayout({
