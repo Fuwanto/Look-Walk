@@ -31,12 +31,13 @@ export default function SubmitOrderForm() {
   }, [state])
 
   return (
-    <form action={dispatch}>
-      <input
-        className="mt-5 w-full bg-indigo-600 hover:bg-indigo-700 text-white uppercase font-bold p-3"
+    <form action={dispatch} className="mt-6">
+      <button
         type="submit"
-        value="Confirmar Compra"
-      />
+        className="w-full bg-primary text-primary-text font-bold py-3 px-4 rounded-lg hover:bg-primary-dark transition-colors duration-300 flex items-center justify-center gap-2"
+      >
+        <span>Confirmar Compra</span>
+      </button>
     </form>
   )
 }

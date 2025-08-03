@@ -5,30 +5,64 @@ import AddProductButton from "./AddProductButton"
 
 export default function ProductCard({ product }: { product: Product }) {
   return (
-    <div className="rounded bg-white shadow relative p-5">
-      <div className={`${!isAvailable(product.stock) && "opacity-40"}`}>
+    <div className="group relative overflow-hidden bg-white rounded-xl transition-all duration-300 ease-in-out hover:shadow-xl">
+      <div className="relative overflow-hidden aspect-[4/4]">
         <Image
           src={getImagePath(product.image)}
           alt={`Imagen de ${product.name}`}
-          width={400}
-          height={600}
-          priority
+          fill
+          className="object-cover transition-transform duration-500 group-hover:scale-105"
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         />
-        <div className="p-3 space-y-2">
-          <h3 className="text-xl font-bold text-gray-600">{product.name}</h3>
-          <p className="text-gray-500">Disponibles: {product.stock}</p>
-          <p className="text-2xl font-extrabold  text-gray-900">
+
+        {/* Overlay de revista - Visible solo en hover en desktop */}
+        {isAvailable(product.stock) && (
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 md:group-hover:opacity-100 transition-opacity duration-300 flex items-end">
+            <div className="p-5 w-full">
+              <AddProductButton product={product} />
+            </div>
+          </div>
+        )}
+
+        {/* Botón siempre visible en móviles */}
+        {isAvailable(product.stock) && (
+          <div className="absolute bottom-4 right-4 z-10 md:hidden">
+            <AddProductButton product={product} mobile />
+          </div>
+        )}
+      </div>
+
+      {/* Indicador de agotado - estilo editorial */}
+      {!isAvailable(product.stock) && (
+        <div className="absolute top-4 right-4 z-10">
+          <span className="bg-primary-light text-primary-dark py-2 px-4 text-sm font-bold tracking-wider rounded-full shadow-sm">
+            AGOTADO
+          </span>
+        </div>
+      )}
+
+      {/* Información del producto con mejor espaciado */}
+      <div className="p-6 border-t border-secondary space-y-4">
+        <div>
+          <h3 className="font-serif text-xl font-bold text-primary-dark tracking-tight mb-1">
+            {product.name}
+          </h3>
+        </div>
+
+        <div className="flex justify-between items-center">
+          <div>
+            {isAvailable(product.stock) && (
+              <p className="text-xs text-secondary-text">
+                {product.stock} disponibles
+              </p>
+            )}
+          </div>
+
+          <p className="text-xl font-bold text-accent">
             {formatCurrency(product.price)}
           </p>
         </div>
       </div>
-      {isAvailable(product.stock) ? (
-        <AddProductButton product={product} />
-      ) : (
-        <p className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white opacity-60 w-full text-center py-5 text-2xl uppercase font-black ">
-          Agotado
-        </p>
-      )}
     </div>
   )
 }

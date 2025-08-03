@@ -13,71 +13,87 @@ async function getCategories() {
 export default async function ProductForm({ product }: { product?: Product }) {
   const categories = await getCategories()
   return (
-    <>
-      <div className="space-y-2 ">
-        <label htmlFor="name" className="block">
-          Nombre Producto
-        </label>
-        <input
-          id="name"
-          type="text"
-          placeholder="Nombre Producto"
-          className="border border-gray-300 w-full p-2"
-          name="name"
-          defaultValue={product?.name}
-        />
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <div className="space-y-6">
+        <div>
+          <label
+            htmlFor="name"
+            className="block font-serif font-bold text-primary-dark mb-2"
+          >
+            Nombre Producto
+          </label>
+          <input
+            id="name"
+            type="text"
+            placeholder="Nombre del producto"
+            className="w-full p-3 border border-secondary rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent"
+            name="name"
+            defaultValue={product?.name}
+          />
+        </div>
+
+        <div>
+          <label
+            htmlFor="price"
+            className="block font-serif font-bold text-primary-dark mb-2"
+          >
+            Precio
+          </label>
+          <input
+            id="price"
+            type="number"
+            placeholder="Precio"
+            className="w-full p-3 border border-secondary rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent"
+            name="price"
+            min={0}
+            defaultValue={product?.price}
+          />
+        </div>
+
+        <div>
+          <label
+            htmlFor="stock"
+            className="block font-serif font-bold text-primary-dark mb-2"
+          >
+            Stock
+          </label>
+          <input
+            id="stock"
+            type="number"
+            placeholder="Cantidad disponible"
+            className="w-full p-3 border border-secondary rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent"
+            name="stock"
+            min={0}
+            defaultValue={product?.stock}
+          />
+        </div>
+
+        <div>
+          <label
+            htmlFor="categoryId"
+            className="block font-serif font-bold text-primary-dark mb-2"
+          >
+            Categoría
+          </label>
+          <select
+            id="categoryId"
+            className="w-full p-3 border border-secondary rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent bg-white appearance-none"
+            name="categoryId"
+            defaultValue={product?.categoryId}
+          >
+            <option value="">Seleccionar Categoría</option>
+            {categories.map((category) => (
+              <option key={category.id} value={category.id}>
+                {category.name}
+              </option>
+            ))}
+          </select>
+        </div>
       </div>
 
-      <div className="space-y-2 ">
-        <label htmlFor="price" className="block">
-          Precio
-        </label>
-        <input
-          id="price"
-          type="number"
-          placeholder="Precio Producto"
-          className="border border-gray-300 w-full p-2"
-          name="price"
-          min={0}
-          defaultValue={product?.price}
-        />
+      <div>
+        <UploadProductImage currentImage={product?.image} />
       </div>
-
-      <div className="space-y-2 ">
-        <label htmlFor="stock" className="block">
-          Stock
-        </label>
-        <input
-          id="stock"
-          type="number"
-          placeholder="Cantidad Disponible"
-          className="border border-gray-300 w-full p-2"
-          name="stock"
-          min={0}
-          defaultValue={product?.stock}
-        />
-      </div>
-
-      <div className="space-y-2 ">
-        <label htmlFor="categoryId" className="block">
-          Categoría
-        </label>
-        <select
-          id="categoryId"
-          className="border border-gray-300 w-full p-2 bg-white"
-          name="categoryId"
-          defaultValue={product?.categoryId}
-        >
-          <option value="">Seleccionar Categoría</option>
-          {categories.map((category) => (
-            <option key={category.id} value={category.id}>
-              {category.name}
-            </option>
-          ))}
-        </select>
-      </div>
-
-      <UploadProductImage currentImage={product?.image} />
-    </>
+    </div>
   )
 }

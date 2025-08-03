@@ -23,10 +23,22 @@ export default async function StorePage({ params }: { params: Params }) {
   const category = await getProducts(categoryId)
 
   return (
-    <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
-      {category.products.map((product) => (
-        <ProductCard key={product.id} product={product} />
-      ))}
+    <div className="container mx-auto px-4 py-12">
+      <div className="mb-12 text-center">
+        <h1 className="font-serif text-4xl md:text-5xl font-bold text-primary-dark tracking-tight mb-3">
+          {category.name}
+        </h1>
+        <p className="text-secondary-text max-w-2xl mx-auto">
+          Descubre nuestra colección exclusiva inspirada en las últimas
+          tendencias de la pasarela
+        </p>
+      </div>
+
+      <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        {category.products.map((product) => (
+          <ProductCard key={product.id} product={product} />
+        ))}
+      </div>
     </div>
   )
 }

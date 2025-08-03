@@ -37,15 +37,16 @@ export default async function ProductsPage({
   if (+page > totalPages) redirect("/admin/products?page=1")
 
   return (
-    <>
-      <Link
-        href="/admin/products/new"
-        className="rounded bg-green-400 font-bold py-2 px-10"
-      >
-        Nuevo Producto
-      </Link>
-
-      <Heading>Administrar productos</Heading>
+    <div className="container mx-auto px-4 py-8 max-w-screen-xl">
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
+        <Heading>Administrar productos</Heading>
+        <Link
+          href="/admin/products/new"
+          className="rounded-md bg-accent text-accent-text font-serif font-bold py-2 px-6 hover:bg-primary-dark transition-colors duration-300 text-center"
+        >
+          Nuevo Producto
+        </Link>
+      </div>
 
       <ProductsTable products={products} />
 
@@ -54,6 +55,6 @@ export default async function ProductsPage({
         totalPages={totalPages}
         baseUrl="/admin/products"
       />
-    </>
+    </div>
   )
 }

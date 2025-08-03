@@ -11,29 +11,30 @@ async function getCategories() {
 
 export default async function MainNav() {
   const categories = await getCategories()
-  return (
-    <header className="px-10 py-5 bg-gray-700 flex flex-col md:flex-row justify-between ">
-      <div className="flex justify-center">
-        <Logo />
-      </div>
 
-      <nav className="flex flex-col md:flex-row gap-2 items-center mt-5 md:mt-0">
-        {categories.map((category) => (
+  return (
+    <header className="bg-primary px-4 py-5 md:px-8 shadow-lg">
+      <div className="container mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
+        <Logo />
+
+        <nav className="flex flex-wrap justify-center gap-2 md:gap-4">
+          {categories.map((category) => (
+            <Link
+              key={category.id}
+              href={`/${category.id}`}
+              className="text-primary-text hover:text-accent transition-colors duration-300 font-medium py-2 px-3 rounded-lg hover:bg-primary-dark"
+            >
+              {category.name}
+            </Link>
+          ))}
           <Link
-            key={category.id}
-            href={`/${category.id}`}
-            className="text-white hover:text-green-400 font-bold p-2"
+            href={"/admin/sales"}
+            className="bg-accent text-accent-text font-bold py-2 px-6 rounded-lg hover:bg-accent-dark transition-colors duration-300 flex items-center gap-2"
           >
-            {category.name}
+            <span>Panel Admin</span>
           </Link>
-        ))}
-        <Link
-          href={"/admin/sales"}
-          className="rounded bg-green-400 font-bold py-2 px-10"
-        >
-          Panel de Administración
-        </Link>
-      </nav>
+        </nav>
+      </div>
     </header>
   )
 }

@@ -8,17 +8,31 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <>
+    <div className="min-h-screen flex flex-col">
       <MainNav />
-      <main className="lg:flex  lg:h-screen lg:overflow-y-hidden">
-        <div className="md:flex-1 md:h-screen md:overflow-y-scroll pt-10  pb-32 px-10">
+
+      <main className="flex-1 flex flex-col lg:flex-row">
+        {/* Carrito de compras - Estilo revista de moda */}
+        <aside className="lg:w-[420px] xl:w-[480px] lg:min-h-screen lg:overflow-y-auto pt-8 pb-24 px-4 md:px-6 bg-primary-light border-t lg:border-t-0 lg:border-l border-secondary">
+          <div className="sticky top-8">
+            <div className="bg-white p-6 rounded-xl shadow-sm border border-secondary">
+              <div className="mb-6">
+                <h2 className="text-2xl font-serif font-bold tracking-tight text-primary-dark border-b border-secondary pb-3">
+                  Tu Selección
+                </h2>
+              </div>
+              <ShoppingCart />
+            </div>
+          </div>
+        </aside>
+
+        {/* Contenido principal */}
+        <div className="flex-1 lg:overflow-y-auto pt-8 pb-24 px-4 md:px-8 lg:px-12">
           {children}
         </div>
-        <aside className="md:w-96 md:h-screen md:overflow-y-scroll pt-10 pb-32 px-5 bg-white ">
-          <ShoppingCart />
-        </aside>
       </main>
+
       <ToastNotification />
-    </>
+    </div>
   )
 }

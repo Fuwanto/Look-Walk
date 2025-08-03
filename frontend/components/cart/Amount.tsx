@@ -1,20 +1,36 @@
 import { formatCurrency } from "@/src/utils"
 
-type AmountProps = {
+interface AmountProps {
   label: string
   amount: number
   discount?: boolean
+  total?: boolean
 }
 
-export default function Amount({ label, amount, discount }: AmountProps) {
+export default function Amount({
+  label,
+  amount,
+  discount,
+  total,
+}: AmountProps) {
   return (
     <div
-      className={`${
-        discount && "bg-green-300 text-green-900"
-      } flex justify-between p-1`}
+      className={`flex justify-between ${
+        total ? "pt-3 border-t border-secondary" : ""
+      }`}
     >
-      <dt className="font-bold">{label}</dt>
-      <dd className="text-gray-900">
+      <dt
+        className={`${discount ? "text-accent" : "text-secondary-text"} ${
+          total ? "font-bold text-primary-dark" : ""
+        }`}
+      >
+        {label}
+      </dt>
+      <dd
+        className={`${discount ? "text-accent" : "text-primary-dark"} ${
+          total ? "font-bold" : ""
+        }`}
+      >
         {discount && "-"} {formatCurrency(amount)}
       </dd>
     </div>

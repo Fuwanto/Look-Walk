@@ -1,14 +1,14 @@
-# Look&Walk 👟🕶️🧥
+# Look\&Walk 👟🕶️🧥
 
 _E-commerce de zapatillas, lentes y hoodies_
 
-**Estado:** 🚧 En desarrollo
+**Estado:** ✅ Proyecto finalizado
 
 ---
 
 ## 🧠 Descripción
 
-**Look&Walk** es una tienda online enfocada en la venta de zapatillas, lentes y hoodies. El objetivo del proyecto es ofrecer una experiencia moderna, rápida y responsive tanto en desktop como en dispositivos móviles.
+**Look\&Walk** es una tienda online enfocada en la venta de zapatillas, lentes y hoodies. El objetivo del proyecto fue ofrecer una experiencia moderna, rápida y responsive tanto en desktop como en dispositivos móviles.
 
 ---
 
@@ -25,3 +25,4 @@ _E-commerce de zapatillas, lentes y hoodies_
 - **Next.js**: Framework React con renderizado híbrido (SSR/SSG).
 - **TypeScript**: Para desarrollo tipado y escalable.
 - **Tailwind CSS v4.0**: Utilizado para estilos modernos y diseño responsive.
+- **Zustand**: Librería de manejo de estado global simple y ligera, utilizada para gestionar el carrito de compras y el filtro de productos.

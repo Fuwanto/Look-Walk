@@ -28,14 +28,17 @@ export default function EditProductForm({
       router.push("/admin/products")
     }
   }, [state])
+
   return (
-    <form action={dispatch} className="space-y-5">
+    <form action={dispatch} className="space-y-8">
       {children}
-      <input
-        type="submit"
-        className="rounded bg-green-400 font-bold py-2 w-full cursor-pointer"
-        value="Guardar Cambios"
-      />
+      <div className="flex justify-end">
+        <input
+          type="submit"
+          className="rounded-md bg-accent text-accent-text font-serif font-bold py-3 px-8 cursor-pointer hover:bg-primary-dark transition-colors duration-300"
+          value="Guardar Cambios"
+        />
+      </div>
     </form>
   )
 }

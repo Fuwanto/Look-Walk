@@ -20,15 +20,17 @@ export default async function SalesPage() {
   })
 
   return (
-    <>
-      <Heading>Ventas</Heading>
-      <p className="text-lg">
-        En esta sección podrás ver las ventas, utiliza el calendario para
-        filtrar por fechas
-      </p>
+    <div className="container mx-auto px-4 py-8 max-w-6xl">
+      <div className="mb-8">
+        <Heading>Ventas</Heading>
+        <p className="text-lg text-secondary-text mt-2 max-w-3xl">
+          En esta sección podrás ver las ventas, utiliza el calendario para
+          filtrar por fechas
+        </p>
+      </div>
       <HydrationBoundary state={dehydrate(queryClient)}>
         <TransactionFilter />
       </HydrationBoundary>
-    </>
+    </div>
   )
 }

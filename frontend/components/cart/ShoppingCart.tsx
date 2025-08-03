@@ -15,27 +15,41 @@ export default function ShoppingCart() {
     <>
       {contents.length ? (
         <>
-          <h2 className="text-4xl font-bold text-gray-900">Resumen de venta</h2>
-          <ul
-            role="list"
-            className="mt-6 divide-y divide-gray-200 border-t border-gray-200 text-sm font-medium text-gray-500"
-          >
+          <div className="mb-6">
+            <h3 className="text-lg font-serif font-bold text-primary-dark">
+              Resumen de Compra
+            </h3>
+            <p className="text-sm text-secondary-text mt-1">
+              Revisa los artículos en tu carrito
+            </p>
+          </div>
+
+          <ul className="divide-y divide-secondary">
             {contents.map((item) => (
               <ShoppingCartItem key={item.productId} item={item} />
             ))}
           </ul>
 
-          <dl className="space-y-6 border-t border-gray-300 py-6 text-sm font-medium text-gray-500">
-            {discount ? (
+          <div className="mt-8 space-y-4 border-t border-secondary pt-6">
+            {discount > 0 && (
               <Amount label="Descuento" amount={discount} discount />
-            ) : null}
-            <Amount label="Total a pagar" amount={total} />
-          </dl>
-          <CouponForm />
-          <SubmitOrderForm />
+            )}
+
+            <Amount label="Total a pagar" amount={total} total />
+          </div>
+
+          <div className="mt-8 space-y-6">
+            <CouponForm />
+            <SubmitOrderForm />
+          </div>
         </>
       ) : (
-        <p className="text-xl text-cente text-gray-900"></p>
+        <div className="text-center py-8">
+          <div className="inline-block p-4 rounded-full bg-primary-light mb-5"></div>
+          <p className="text-xl text-secondary-text font-serif mb-6">
+            Tu carrito está vacío
+          </p>
+        </div>
       )}
     </>
   )

@@ -14,28 +14,35 @@ export default function CouponForm() {
   }
 
   return (
-    <>
-      <p className="py-5 font-bold border-t border-gray-300 text-black">
+    <div className="border-t border-secondary pt-6">
+      <h3 className="font-serif font-bold text-lg text-primary-dark mb-4">
         Canjear Cupón
-      </p>
-      <form className="flex" onSubmit={handleSubmit}>
+      </h3>
+      <form className="flex gap-2" onSubmit={handleSubmit}>
         <input
           type="text"
-          className="p-2 bg-gray-200 border-gray-300 w-full text-black"
+          className="flex-1 p-3 border border-secondary rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent"
           placeholder="Ingresa un cupón"
           name="coupon_name"
         />
-        <input
+        <button
           type="submit"
-          className="p-3 bg-green-400 font-bold hover:cursor-pointer"
-          value="Canjear"
-        />
+          className="bg-accent text-accent-text font-bold py-3 px-4 rounded-lg hover:bg-accent-dark transition-colors duration-300 whitespace-nowrap"
+        >
+          Canjear
+        </button>
       </form>
-      {coupon.message ? (
-        <p className="py-4 text-center text-sm font-bold text-black">
+      {coupon.message && (
+        <p
+          className={`mt-3 text-center text-sm font-medium ${
+            !coupon.message.endsWith("no existe")
+              ? "text-green-600"
+              : "text-red-600"
+          }`}
+        >
           {coupon.message}
         </p>
-      ) : null}
-    </>
+      )}
+    </div>
   )
 }

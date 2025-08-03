@@ -8,65 +8,84 @@ export default function TransactionSummary({
   transaction: Transaction
 }) {
   return (
-    <>
-      <div className="mb-6  text-sm font-medium text-gray-500 border border-gray-200">
-        <p className="text-sm font-black text-gray-900 p-2 bg-gray-200 ">
-          ID:{" "}
-        </p>
-        <ul
-          role="list"
-          className="divide-y divide-gray-200 border-t border-gray-200 border-b"
-        >
-          {transaction.contents.map((item) => (
-            <li key={item.id} className="p-5 ">
-              <div className="flex items-center space-x-6 ">
-                <div className="relative w-32 h-32">
-                  <Image
-                    src={getImagePath(item.product.image)}
-                    alt={`Imagen de producto ${item.product.name}`}
-                    className="absolute"
-                    fill
-                  />
-                </div>
-                <div className="flex-auto space-y-1 ">
-                  <h3 className="text-gray-900">{item.product.name}</h3>
-                  <p className="text-lg font-extrabold  text-gray-900">
-                    {formatCurrency(+item.price)}
-                  </p>
-                  <p className="text-lg  text-gray-900">
-                    Cantidad: {item.quantity}
-                  </p>
-                </div>
-              </div>
-            </li>
-          ))}
-        </ul>
-
-        <dl className="space-y-6  text-sm font-medium text-gray-500 p-5">
-          {transaction.coupon && transaction.discount && (
-            <>
-              <div className="flex justify-between">
-                <dt>Cupón Utilizado</dt>
-                <dd className="text-gray-900">{transaction.coupon}</dd>
-              </div>
-
-              <div className="flex justify-between">
-                <dt>Descuento</dt>
-                <dd className="text-gray-900">
-                  -{formatCurrency(+transaction.discount)}
-                </dd>
-              </div>
-            </>
-          )}
-
-          <div className="flex justify-between">
-            <dt className="text-lg text-black font-black">Total</dt>
-            <dd className="text-lg text-black font-black">
-              {formatCurrency(+transaction.total)}
-            </dd>
-          </div>
-        </dl>
+    <div className="bg-white rounded-xl shadow-sm border border-secondary overflow-hidden">
+      {/* Encabezado de la transacción */}
+      <div className="bg-primary text-primary-text p-4 flex justify-between items-center">
+        <div>
+          <p className="font-mono text-sm opacity-80">ID: {transaction.id}</p>
+        </div>
+        <div className="bg-accent rounded-full px-3 py-1 text-sm font-bold">
+          {formatCurrency(+transaction.total)}
+        </div>
       </div>
-    </>
+
+      {/* Lista de productos */}
+      <ul className="divide-y divide-secondary">
+        {transaction.contents.map((item) => (
+          <li key={item.id} className="p-4">
+            <div className="flex gap-4">
+              {/* Imagen del producto */}
+              <div className="relative w-24 h-24 flex-shrink-0">
+                <Image
+                  src={getImagePath(item.product.image)}
+                  alt={`Imagen de producto ${item.product.name}`}
+                  fill
+                  className="object-cover rounded-lg"
+                />
+              </div>
+
+              {/* Detalles del producto */}
+              <div className="flex-1">
+                <h3 className="font-serif font-bold text-lg text-primary-dark">
+                  {item.product.name}
+                </h3>
+                <div className="grid grid-cols-2 gap-2 mt-2">
+                  <div>
+                    <p className="text-sm text-secondary-text">
+                      Precio unitario
+                    </p>
+                    <p className="font-medium text-primary-dark">
+                      {formatCurrency(+item.price)}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-secondary-text">Cantidad</p>
+                    <p className="font-medium text-primary-dark">
+                      {item.quantity}
+                    </p>
+                  </div>
+                  <div className="col-span-2">
+                    <p className="text-sm text-secondary-text">Subtotal</p>
+                    <p className="font-medium text-primary-dark">
+                      {formatCurrency(+item.price * item.quantity)}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </li>
+        ))}
+      </ul>
+
+      {/* Cupones y descuentos */}
+      {transaction.coupon && transaction.discount && (
+        <div className="p-4 border-t border-secondary">
+          <div className="grid grid-cols-2 gap-3">
+            <div>
+              <p className="text-sm text-secondary-text">Cupón utilizado</p>
+              <p className="font-medium text-primary-dark">
+                {transaction.coupon}
+              </p>
+            </div>
+            <div>
+              <p className="text-sm text-secondary-text">Descuento</p>
+              <p className="font-medium text-red-600">
+                -{formatCurrency(+transaction.discount)}
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
   )
 }

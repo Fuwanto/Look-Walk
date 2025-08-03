@@ -23,19 +23,27 @@ export default async function EditProductPage({ params }: { params: Params }) {
   const { id } = await params
   const product = await getProduct(id)
   return (
-    <>
-      <Link
-        href="/admin/products?page=1"
-        className="rounded bg-green-400 font-bold py-2 px-10"
-      >
-        Volver
-      </Link>
+    <div className="container mx-auto px-4 py-8 max-w-4xl">
+      <div className="mb-6">
+        <Link
+          href="/admin/products?page=1"
+          className="inline-flex items-center gap-2 rounded-md bg-primary text-primary-text font-serif font-bold py-2 px-6 hover:bg-primary-dark transition-colors duration-300"
+        >
+          Volver al listado
+        </Link>
+      </div>
 
-      <Heading>Editar Producto: {product.name}</Heading>
+      <div className="bg-white rounded-xl shadow-sm border border-secondary p-6 md:p-8">
+        <Heading>
+          Editar Producto: <span className="text-accent">{product.name}</span>
+        </Heading>
 
-      <EditProductForm>
-        <ProductForm product={product} />
-      </EditProductForm>
-    </>
+        <div className="mt-8">
+          <EditProductForm>
+            <ProductForm product={product} />
+          </EditProductForm>
+        </div>
+      </div>
+    </div>
   )
 }
