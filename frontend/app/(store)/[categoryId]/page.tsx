@@ -12,7 +12,6 @@ async function getProducts(categoryId: string) {
     },
   })
   const json = await req.json()
-  console.log(json)
   if (!req.ok) {
     redirect("/404")
   }
